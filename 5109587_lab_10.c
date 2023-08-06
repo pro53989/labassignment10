@@ -20,6 +20,7 @@ struct Trie* createTrieNode() {
     return node;
 }
 
+// Function to insert a word into the trie
 void insert(struct Trie** ppTrie, char* word) {
     struct Trie* curr = *ppTrie;
     for (int i = 0; word[i] != '\0'; i++) {
@@ -32,7 +33,8 @@ void insert(struct Trie** ppTrie, char* word) {
     curr->count++;
 }
 
-int numberOfOccurances(struct Trie* pTrie, char* word) {
+// Function to find the number of occurrences of a word in the trie
+int numberOfOccurrences(struct Trie* pTrie, char* word) {
     struct Trie* curr = pTrie;
     for (int i = 0; word[i] != '\0'; i++) {
         int index = word[i] - 'a';
@@ -43,6 +45,7 @@ int numberOfOccurances(struct Trie* pTrie, char* word) {
     return (curr != NULL && curr->isEndOfWord) ? curr->count : 0;
 }
 
+// Function to deallocate memory used by the trie
 struct Trie* deallocateTrie(struct Trie* pTrie) {
     if (pTrie == NULL)
         return NULL;
@@ -53,6 +56,7 @@ struct Trie* deallocateTrie(struct Trie* pTrie) {
 }
 
 int main(void) {
+    // Create the root node of the trie
     struct Trie* trie = createTrieNode();
 
     int numWords;
@@ -60,18 +64,21 @@ int main(void) {
     scanf("%d", &numWords);
     getchar();
 
+    // Insert words into the trie
     printf("Enter the words in the dictionary:\n");
     for (int i = 0; i < numWords; i++) {
         char word[50];
         fgets(word, 50, stdin);
-        word[strcspn(word, "\n")] = '\0';
+        word[strcspn(word, "\n")] = '\0'; // Remove the newline character from the input
         insert(&trie, word);
     }
 
+    // Words to search for in the trie
     char *pWords[] = {"notaword", "ucf", "no", "note", "corg"};
     for (int i = 0; i < 5; i++)
-        printf("\t%s : %d\n", pWords[i], numberOfOccurances(trie, pWords[i]));
+        printf("\t%s : %d\n", pWords[i], numberOfOccurrences(trie, pWords[i]));
 
+    // Deallocate memory used by the trie
     trie = deallocateTrie(trie);
     if (trie != NULL)
         printf("There is an error in this program\n");
